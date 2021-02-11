@@ -1,31 +1,10 @@
 import Router from './Router.js'
+import clientId from './clientId.js'
 
-const clientId = '40efee3a942045f68e1020b92e7cda45'
-const responseType = 'code'
+const responseType = 'token'
 const redirectUri = 'http://localhost:5500/#/callback/'
-const scopes = 'user-read-private user-read-email'
-const clientSecret = 'bfa917d118d741ba9d71e2cf18c2119c'
-const authorization = `
-	${clientId}:${clientSecret}
-`
-const newAuthorization = btoa(authorization)
-
-console.log(newAuthorization)
-
-// const home = `
-// 	<h1>I am homepage</h1>
-// `
-// const login = `
-// 	<h1>I am login page</h1>
-// `
-// const callback = `
-// 	<h1>I am callback page</h1>
-// `
-// const routes = {
-// 	'/': home,
-// 	'/login': login,
-// 	'/callback': callback
-// }
+const scopes = 'user-read-private user-read-email playlist-read-private'
+const urlAuthorize = 'https://accounts.spotify.com/authorize'
 
 const router = new Router({
 	mode: 'hash', 
@@ -34,43 +13,110 @@ const router = new Router({
 
 const localStorage = window.localStorage
 
-const accessToken = localStorage.getItem('acces_token')
-const url = 'https://accounts.spotify.com/api/token'
+const accessIsThere = window.location.hash.includes('access_token') && window.location.hash.includes('callback') === false
 
-const data = {
-	form: {
-		code: accessToken,
-		redirect_uri: redirectUri,
-		grant_type: 'authorization_code',
-	},
+if(accessIsThere) {
+	window.location.replace(redirectUri + window.location.hash)
 }
 
+const accessToken = localStorage.getItem('access_token')
+
 router.add(/login/, () => {
-	const url = 'https://accounts.spotify.com/authorize'
-	
+	//Full flow
+	/*
 	window.location.replace(
-		`${url}?response_type=${responseType}&client_id=${clientId}&scope=${encodeURIComponent(scopes)}&redirect_uri=${encodeURIComponent(redirectUri)}`
+		`${urlAuthorize}?response_type=${responseType}&client_id=${clientId}&scope=${encodeURIComponent(scopes)}&redirect_uri=${encodeURIComponent(redirectUri)}&show_dialog=true`
 	)
+	*/
+	//No accept flow
+	window.location.replace(
+		`${urlAuthorize}?response_type=${responseType}&client_id=${clientId}&scope=${encodeURIComponent(scopes)}&redirect_uri=${encodeURIComponent(redirectUri)}`
+	)
+	
 })
 
 router.add(/callback/, () => {
-	const code = window.location.search.split('?code=')
-	localStorage.setItem('acces_token', code[1])
+	const code = window.location.hash
+	const accessToken = code.match(/access_token=(.*?)&/)[1]
+	localStorage.setItem('access_token', accessToken)
+	fetch("https://api.spotify.com/v1/me/playlists", {
+		headers: {
+			'Authorization': 'Bearer ' + accessToken
+		}
+	}).then(res => res.json())
+		.then(data => {
+			const playlists = data.items
+			console.log(playlists)
+			render(`
+				<h1>Select a playlist</h1>
+				<h2>
+					Measure the danceability of your playlist!
+				</h2>
+				<main>
+				${playlists.map((playlist, index) => 
+					`<button type="button" value="${playlist.href}">
+						<article>
+							<h3>${playlist.name}</h3>
+							<img src="${playlist.images[0].url}" alt="">
+						</article>
+					</button>`
+				).join('')}
+				</main>
+			`)
+			createBtnEventListeners()
+			
+	}).then(() => {
+		
+	})
 })
 
-
-
-async function postData(url = '', data = {}) {
-	const response = await fetch(url, {
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/x-www-form-urlencoded',
-			'Authorization': 'Basic ' + (newAuthorization)
-		},
-		body: JSON.stringify(data)
-	})
-	return response.json()
+function render(html) {
+	const rootDiv = document.getElementById('root')
+	return rootDiv.innerHTML = html
 }
 
-postData(url, data)
+function btnEvent(event) {
+	const href = event.currentTarget.value
+	fetch(href, {
+		headers: {
+			'Authorization': 'Bearer ' + accessToken
+		}
+	}).then(res => res.json())
+		.then(data => {
+			const tracks = data.tracks.items
+			console.log(tracks)
+			// tracks.forEach(track => track)
+		})
+}
 
+function createBtnEventListeners() {
+	const buttons = document.querySelectorAll('button')
+	buttons.forEach(btn => btn.addEventListener('click', btnEvent))
+}
+
+/*
+fetch("https://api.spotify.com/v1/playlists/1lpfbEQILpZzficQNqJmvO/tracks", {
+		headers: {
+			'Authorization': 'Bearer ' + accessToken
+		}
+	}).then(res => res.json())
+		.then(data => console.log(data))
+*/
+
+/*
+fetch("https://api.spotify.com/v1/playlists/1lpfbEQILpZzficQNqJmvO/tracks", {
+		headers: {
+			'Authorization': 'Bearer ' + accessToken
+		}
+	}).then(res => res.json())
+		.then(data => console.log(data))
+*/
+
+/*
+fetch("https://api.spotify.com/v1/playlists/1lpfbEQILpZzficQNqJmvO/tracks", {
+		headers: {
+			'Authorization': 'Bearer ' + accessToken
+		}
+	}).then(res => res.json())
+		.then(data => console.log(data))
+*/

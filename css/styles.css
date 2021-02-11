@@ -1,0 +1,207 @@
+:root {
+	--primary: #1DB954;
+	--secondary: #191414;
+	--third: #fff;
+	--fourth: #000;
+	--btn-dimensions: 15rem;
+	--image-dimensions: calc(var(--btn-dimensions) * 1.05)
+}
+
+* {
+	box-sizing: border-box;
+	line-height: 1.5;
+}
+
+@font-face {
+    font-family: 'Poppins';
+    src: url('../assets/fonts/Poppins-Medium.woff2') format('woff2'),
+        url('../assets/fonts/Poppins-Medium.woff') format('woff');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Poppins';
+    src: url('../assets/fonts/Poppins-Regular.woff2') format('woff2'),
+        url('../assets/fonts/Poppins-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Poppins';
+    src: url('../assets/fonts/Poppins-Light.woff2') format('woff2'),
+        url('../assets/fonts/Poppins-Light.woff') format('woff');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Poppins';
+    src: url('../assets/fonts/Poppins-Bold.woff2') format('woff2'),
+        url('../assets/fonts/Poppins-Bold.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Poppins';
+    src: url('../assets/fonts/Poppins-Black.woff2') format('woff2'),
+        url('../assets/fonts/Poppins-Black.woff') format('woff');
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+body {
+	background-color: var(--secondary);
+	font-family: 'Poppins';
+	margin: 0;
+	color: var(--third);
+}
+
+h1 {
+	font-size: 2.5em;
+	font-family: 'Poppins';
+	font-weight: 900;
+}
+
+h2 {
+	font-size: 2em;
+	font-family: 'Poppins';
+	font-weight: bold;
+}
+
+h3 {
+	font-size: 1.75em;
+	font-family: 'Poppins';
+	font-weight: 500;
+}
+
+h4 {
+	font-size: 1.5em;
+	font-family: 'Poppins';
+	font-weight: 500;
+}
+
+h5 {
+	font-size: 1.25em;
+	font-family: 'Poppins';
+	font-weight: 500;
+}
+
+p {
+	font-family: 'Poppins';
+	font-weight: normal;
+}
+
+p, button, input {
+	font-size: 16px;
+}
+
+header {
+	background-color: var(--fourth);
+	margin: 0;
+	padding: 1rem;
+}
+
+main {
+	display: flex;
+	justify-content: space-around;
+	flex-wrap: wrap;
+}
+
+#root {
+	margin: auto;
+	max-width: 60rem;
+}
+
+main button {
+	display: block;
+	margin: 0 1rem 1rem 0;
+}
+
+main button:nth-child(3n) {
+	margin-right: 0;
+}
+
+main button:nth-child(3n+1):last-child{
+	margin-right: 0;
+}
+
+main button:nth-child(3n+2):last-child,
+main button:nth-last-child(2) {
+	margin-right: 0;
+}
+
+header h3 {
+	margin: 0;
+	color: var(--primary);
+	text-align: center;
+}
+
+article {
+	width: var(--btn-dimensions);
+	height: var(--btn-dimensions);
+	position: relative;
+	display: flex;
+	color: var(--third);
+	padding: 1rem;
+	overflow: hidden;
+	transition: all 0.3s ease;
+	background-color: var(--secondary);
+}
+
+article img {
+	width: var(--image-dimensions);
+	height: var(--image-dimensions);
+	object-fit: cover;
+	position: absolute;
+	top: -2.5%;
+	left: -2.5%;
+	display: block;
+	transition: all 0.3s ease;
+	pointer-events: none;
+}
+
+article h3 {
+	margin: 0;
+	position: relative;
+	z-index: 2;
+	text-align: left;	
+	align-self: flex-end;
+	
+}
+
+button {
+	margin: 0;
+	padding: 0;
+	border: none;
+	position: relative;
+	box-shadow: 8px 8px 8px rgba(0,0,0,0.3);
+	overflow: hidden;
+	transition: all 0.3s ease;
+}
+
+button:hover {
+	transform: scale(1.05);
+}
+
+button:hover article img {
+	transform: scale(0.95)
+}
+
+button::after {
+	content: '';
+	position: absolute;
+	left: -5%;
+	top: -5%;
+	height: 110%;
+	width: 110%;
+	background: linear-gradient(rgba(255,255,255,0.2), rgba(0,0,0,0.6));
+	z-index: 0;
+}

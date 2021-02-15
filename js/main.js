@@ -11,6 +11,7 @@ import setAccessToken from './config/setAccessToken.js'
 
 // render
 import renderPlaylists from './render/renderPlaylists.js'
+import renderHome from './render/renderHome.js'
 
 // helper
 import createBtnEventListeners from './helpers/createBtnEventListeners.js'
@@ -21,7 +22,7 @@ function init() {
 		root: '/'
 	})
 
-	console.log(accessIsThere)
+	renderHome()
 
 	if(accessIsThere) {
 		setAccessToken()

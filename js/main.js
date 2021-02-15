@@ -50,8 +50,6 @@ function init() {
 				console.log(playlists)
 				renderPlaylists(playlists)
 				createBtnEventListeners({ eventFunction: getTracks, accessToken: accessToken })
-		}).then(() => {
-			
 		})
 	})
 }

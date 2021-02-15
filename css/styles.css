@@ -151,30 +151,33 @@ article {
 	display: flex;
 	color: var(--third);
 	padding: 1rem;
-	overflow: hidden;
 	transition: all 0.3s ease;
 	background-color: var(--secondary);
 }
 
 article img {
-	width: var(--image-dimensions);
-	height: var(--image-dimensions);
+	width: var(--btn-dimensions);
+	height: var(--btn-dimensions);
 	object-fit: cover;
 	position: absolute;
-	top: -2.5%;
-	left: -2.5%;
+	top: 0;
+	left: 0;
 	display: block;
 	transition: all 0.3s ease;
 	pointer-events: none;
+	backface-visibility: hidden;
+	max-width: 100%;
+	max-height: 100%;
+	object-position: center center;
+	z-index: 1;
 }
 
 article h3 {
 	margin: 0;
 	position: relative;
-	z-index: 2;
+	z-index: 3;
 	text-align: left;	
 	align-self: flex-end;
-	
 }
 
 button {
@@ -183,7 +186,6 @@ button {
 	border: none;
 	position: relative;
 	box-shadow: 8px 8px 8px rgba(0,0,0,0.3);
-	overflow: hidden;
 	transition: all 0.3s ease;
 }
 
@@ -191,17 +193,13 @@ button:hover {
 	transform: scale(1.05);
 }
 
-button:hover article img {
-	transform: scale(0.95)
-}
-
 button::after {
 	content: '';
 	position: absolute;
-	left: -5%;
-	top: -5%;
-	height: 110%;
-	width: 110%;
+	left: 0;
+	top: 0;
+	height: var(--btn-dimensions);
+	width: var(--btn-dimensions);
 	background: linear-gradient(rgba(255,255,255,0.2), rgba(0,0,0,0.6));
-	z-index: 0;
+	z-index: 2;
 }

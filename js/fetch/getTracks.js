@@ -1,6 +1,4 @@
-function getTracks({ accessToken }) {
-	console.log('event', event)
-	console.log('accessToken', accessToken)
+function getTracks(event, { accessToken }) {
 	const href = event.currentTarget.value
 	fetch(href, {
 		headers: {
@@ -9,6 +7,12 @@ function getTracks({ accessToken }) {
 	}).then(res => res.json())
 		.then(data => {
 			const tracks = data.tracks.items
+
+			// fetch(href, {
+			// 	headers: {
+			// 		'Authorization': 'Bearer ' + accessToken
+			// 	}
+			// })
 			console.log(tracks)
 		})
 }

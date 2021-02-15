@@ -1,6 +1,6 @@
 const clientId = '40efee3a942045f68e1020b92e7cda45'
 const responseType = 'token'
-const redirectUri = `${window.location.origin}/#/callback/`
+const redirectUri = `${window.location.origin}${window.location.pathname}#/callback/`
 console.log(redirectUri)
 const scopes = 'user-read-private user-read-email playlist-read-private'
 const urlAuthorize = 'https://accounts.spotify.com/authorize'

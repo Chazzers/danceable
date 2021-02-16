@@ -47,7 +47,7 @@ function init() {
 			.then(data => {
 				const playlists = data.items
 				renderPlaylists(playlists)
-				createBtnEventListeners({ eventFunction: btnEvent, accessToken: accessToken })
+				createBtnEventListeners({ eventFunction: btnEvent, accessToken: accessToken, router: router })
 		})
 	})
 	router.add(/loading/, () => {

@@ -7,7 +7,7 @@ function renderPlaylists(playlists) {
 			Measure the danceability of your playlist!
 		</h2>
 		<main>
-		${playlists.map((playlist, index) => 
+		${playlists.map(playlist => 
 			`<button type="button" value="${playlist.href}">
 				<article>
 					<h3>${playlist.name}</h3>

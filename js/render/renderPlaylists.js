@@ -1,7 +1,6 @@
 import render from './render.js'
 
 function renderPlaylists(playlists) {
-	const pathname = window.location.pathname
 	render(`
 		<h1>Select a playlist</h1>
 		<h2>
@@ -10,7 +9,7 @@ function renderPlaylists(playlists) {
 		<main>
 		<div>
 			${playlists.map(playlist => 
-				`<a class="playlist" href="${pathname}#/loading" data-href="${playlist.href}" data-name="${playlist.name}" data-img="${playlist.images[0].url}">
+				`<a class="playlist" href="${window.location.pathname}#/loading" data-href="${playlist.href}" data-name="${playlist.name}" data-img="${playlist.images[0].url}">
 					<article>
 						<h3>${playlist.name}</h3>
 						<img src="${playlist.images[0].url}" alt="">

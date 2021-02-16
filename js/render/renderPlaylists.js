@@ -7,14 +7,16 @@ function renderPlaylists(playlists) {
 			Measure the danceability of your playlist!
 		</h2>
 		<main>
-		${playlists.map(playlist => 
-			`<button type="button" value="${playlist.href}">
-				<article>
-					<h3>${playlist.name}</h3>
-					<img src="${playlist.images[0].url}" alt="">
-				</article>
-			</button>`
-		).join('')}
+		<div>
+			${playlists.map(playlist => 
+				`<a class="playlist" href="/#/loading" data-href="${playlist.href}" data-name="${playlist.name}" data-img="${playlist.images[0].url}">
+					<article>
+						<h3>${playlist.name}</h3>
+						<img src="${playlist.images[0].url}" alt="">
+					</article>
+				</a>`
+			).join('')}
+		</div>
 		</main>
 	`)
 }

@@ -1,4 +1,9 @@
 import accessToken from '../config/accessToken.js'
+import localStorage from '../config/localStorage.js'
+
+function calcDelay(delay, array) {
+	return delay * array.length
+}
 
 async function recursiveFetch({ url, currentTracks }) {
 	if(url) {
@@ -61,9 +66,9 @@ async function fetchTracksAnalysis(item, array, limit = Number.MAX_VALUE) {
 	.then(data => array.push(data))
 	return getTracksAnalysis
 }
-async function getTracks(event) {
-	const href = event.currentTarget.value
-	const tracksHref = `${href}/tracks?offset=0&limit=100`
+async function getTracks() {
+	const getHref = localStorage.getItem('href')
+	const tracksHref = `${getHref}/tracks?offset=0&limit=100`
 	let allTracks = []
 	let danceabilityArray = []
 	let tempoArray = []
@@ -82,6 +87,7 @@ async function getTracks(event) {
 			})
 		)
 		.then(async data => {
+			localStorage.setItem('redirect_delay',calcDelay(delay, data))
 			await data.forEach(delayLoop(fetchTracksAnalysis, allTracks, delay, 10))
 			return data
 		})
@@ -94,6 +100,9 @@ async function getTracks(event) {
 					const danceabilityAverage = danceabilityArray.reduce((a, b) => a + b, 0) / danceabilityArray.length
 					
 					const danceabilityScore = danceabilityAverage + calcScore(danceabilityArray) + calcScore(tempoArray)
+					const finalScore = Math.round(danceabilityScore * 100)
+					console.log(finalScore)
+					localStorage.setItem('danceability_score', finalScore)
 					return danceabilityScore
 				}
 			}), tracks.length * delay)

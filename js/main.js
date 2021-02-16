@@ -3,18 +3,23 @@ import Router from './router/Router.js'
 // fetch
 import getTracks from './fetch/getTracks.js'
 
+
 // config
-import { url, redirectUri } from './config/api.js'
+import { url } from './config/api.js'
 import accessIsThere from './config/accessIsThere.js'
 import accessToken from './config/accessToken.js'
 import setAccessToken from './config/setAccessToken.js'
+import localStorage from './config/localStorage.js'
 
 // render
 import renderPlaylists from './render/renderPlaylists.js'
 import renderHome from './render/renderHome.js'
+import renderLoading from './render/renderLoading.js'
+import renderScore from './render/renderScore.js'
 
 // helper
 import createBtnEventListeners from './helpers/createBtnEventListeners.js'
+import btnEvent from './helpers/btnEvent.js'
 
 function init() {
 	const router = new Router({
@@ -26,17 +31,10 @@ function init() {
 
 	if(accessIsThere) {
 		setAccessToken()
-		window.location.replace(redirectUri)
+		router.navigate('/callback')
 	}
 
 	router.add(/login/, () => {
-		//Full flow
-		/*
-		window.location.replace(
-			`${urlAuthorize}?response_type=${responseType}&client_id=${clientId}&scope=${encodeURIComponent(scopes)}&redirect_uri=${encodeURIComponent(redirectUri)}&show_dialog=true`
-		)
-		*/
-		// No accept flow
 		window.location.replace(url)
 	})
 	
@@ -48,10 +46,17 @@ function init() {
 		}).then(res => res.json())
 			.then(data => {
 				const playlists = data.items
-				console.log(playlists)
 				renderPlaylists(playlists)
-				createBtnEventListeners({ eventFunction: getTracks, accessToken: accessToken })
+				createBtnEventListeners({ eventFunction: btnEvent, accessToken: accessToken })
 		})
+	})
+	router.add(/loading/, () => {
+		getTracks()
+		renderLoading()
+		setTimeout(() => router.navigate('/score'), localStorage.getItem('redirect_delay'))
+	})
+	router.add(/score/, () => {
+		renderScore()
 	})
 }
 

@@ -2,8 +2,10 @@ import render from './render.js'
 
 function renderHome() {
 	render(`
-		<h1>Hello wurld</h1>
-		<a href="${window.location.href}#/login/" id="login">login</a>
+		<main>
+			<h1>Hello wurld</h1>
+			<a href="${window.location.pathname}#/login/" id="login">login</a>
+		</main>
 	`)
 }
 

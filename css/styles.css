@@ -4,7 +4,16 @@
 	--third: #fff;
 	--fourth: #000;
 	--btn-dimensions: 15rem;
-	--image-dimensions: calc(var(--btn-dimensions) * 1.05)
+	--image-dimensions: calc(var(--btn-dimensions) * 1.05);
+	--character-height: 30rem;
+	--character-width: 7.5rem;
+	--character-head-dimensions: 5rem;
+	--character-body-height: 6rem;
+	--character-body-width: 0.5rem;
+	--character-limb-width: 0.5rem;
+	--character-arm-length: 5rem;
+	--character-leg-length: 5rem;
+	--character-color: #fff;
 }
 
 * {
@@ -99,17 +108,17 @@ p {
 	font-weight: normal;
 }
 
-p, button, input {
+p, a, input {
 	font-size: 16px;
 }
 
 header {
 	background-color: var(--fourth);
-	margin: 0;
+	margin: 0 0 2rem;
 	padding: 1rem;
 }
 
-main {
+main div {
 	display: flex;
 	justify-content: space-around;
 	flex-wrap: wrap;
@@ -120,21 +129,16 @@ main {
 	max-width: 60rem;
 }
 
-main button {
-	display: block;
-	margin: 0 1rem 1rem 0;
-}
-
-main button:nth-child(3n) {
+main .playlist:nth-child(3n) article{
 	margin-right: 0;
 }
 
-main button:nth-child(3n+1):last-child{
+main .playlist:nth-child(3n+1):last-child article{
 	margin-right: 0;
 }
 
-main button:nth-child(3n+2):last-child,
-main button:nth-last-child(2) {
+main .playlist:nth-child(3n+2):last-child article,
+main .playlist:nth-last-child(2) article{
 	margin-right: 0;
 }
 
@@ -153,6 +157,7 @@ article {
 	padding: 1rem;
 	transition: all 0.3s ease;
 	background-color: var(--secondary);
+	margin: 0 1rem 1rem 0;
 }
 
 article img {
@@ -170,6 +175,8 @@ article img {
 	max-height: 100%;
 	object-position: center center;
 	z-index: 1;
+	box-shadow: 8px 8px 8px rgba(0,0,0,0.3);
+	transition: all 0.3s ease;
 }
 
 article h3 {
@@ -180,20 +187,20 @@ article h3 {
 	align-self: flex-end;
 }
 
-button {
+.playlist {
 	margin: 0;
 	padding: 0;
 	border: none;
 	position: relative;
-	box-shadow: 8px 8px 8px rgba(0,0,0,0.3);
-	transition: all 0.3s ease;
+	
+	text-decoration: none;
 }
 
-button:hover {
+.playlist article:hover {
 	transform: scale(1.05);
 }
 
-button::after {
+.playlist article::after {
 	content: '';
 	position: absolute;
 	left: 0;
@@ -203,3 +210,9 @@ button::after {
 	background: linear-gradient(rgba(255,255,255,0.2), rgba(0,0,0,0.6));
 	z-index: 2;
 }
+
+h1 span {
+	font-size: 1.2rem;
+}
+
+

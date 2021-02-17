@@ -1,11 +1,9 @@
 import accessToken from '../config/accessToken.js'
 import localStorage from '../config/localStorage.js'
 
-function calcDelay(delay, array) {
-	return delay * array.length
-}
-
 async function recursiveFetch({ url, currentTracks }) {
+	let tracksArray = []
+	tracksArray.push(currentTracks)
 	if(url) {
 		const tracks = await fetch(url, {
 			headers: {
@@ -19,60 +17,85 @@ async function recursiveFetch({ url, currentTracks }) {
 				}
 				return data
 			})
-		return currentTracks.concat(tracks.items)
+			tracksArray.push(tracks.items)
+		return tracksArray
 	}
-	return currentTracks
+	return tracksArray
 }
 
-const delayLoop = (fn, array, delay, limit) => {
-	return (x, i) => {
-	  	setTimeout(() => {
-			fn(x, array, limit)
-		}, i * delay)
-	}
-}
-
-function getStandardDeviation (array) {
+function getStandardDeviation (array, property) {
 	const n = array.length
-	const mean = array.reduce((a, b) => a + b) / n
-	return Math.sqrt(array.map(x => Math.pow(x - mean, 2)).reduce((a, b) => a + b) / n)
-  }
-
-function calcScore(array) {
-	const average = array.reduce((a, b) => a + b, 0) / array.length
-	const standardDeviation = getStandardDeviation(array)
-	const percentageOfAverage = (standardDeviation / average)
-	const reversePercentage = 1 - percentageOfAverage
-	const scale = 0.5
-	const reversePercentageMinusScale = reversePercentage - scale
-	const createScoreFromPercentage = reversePercentageMinusScale / 10
-	const finalScore = createScoreFromPercentage
-	return finalScore
+	const mean = array.reduce((a, b) => a + b[property], 0) / n
+	return Math.sqrt(array.map(x => Math.pow(x[property] - mean, 2)).reduce((a, b) => a + b) / n)
 }
 
-async function fetchTracksAnalysis(item, array, limit = Number.MAX_VALUE) {
-	const url = `https://api.spotify.com/v1/audio-features/${item.track.id}`
+async function fetchTracksAnalysis(item) {
+	const url = `https://api.spotify.com/v1/audio-features?ids=${item}`
 	const getTracksAnalysis = await fetch(url, {
 		headers: {
 			'Authorization': 'Bearer ' + accessToken
 		}
 	})
-	.then(res => {
-		if(res.status !== 200 && --limit) {
-			return fetchTracksAnalysis(item, array, limit)
+	.then(res => res.json())
+	.then(data => {
+			return data
 		}
-		return res.json()
-	})
-	.then(data => array.push(data))
+	)
 	return getTracksAnalysis
 }
+
+function mergeNestedArray(array) {
+	if(array[0].audio_features) {
+		const newArray = array.map(item => item.audio_features)
+		return [].concat.apply([], newArray)
+	}
+	return [].concat.apply([], array)
+}
+
+function transformData(data) {
+	return Object.assign({}, data, {
+		id: data.track.id,
+		duration: data.track.duration_ms,
+		name: data.track.name,
+		danceability: data.audio_features.danceability,
+		tempo: data.audio_features.tempo
+	})
+}
+
+function tidyData(data) {
+	return data.map(({id, duration, name, danceability, tempo}) => ({id, duration, name, danceability, tempo}))
+}
+
+
+function mergeData(trackData, audioFeatureData) {
+	trackData.forEach((item, index) => item.audio_features = audioFeatureData[index])
+	return trackData
+}
+
+
+function cleanData(trackData, audioFeatureData) {
+	trackData = mergeNestedArray(trackData)
+	audioFeatureData = mergeNestedArray(audioFeatureData)
+	const mergedData = mergeData(trackData, audioFeatureData)
+	const transformedData = mergedData.map(item => transformData(item))
+	const cleanedData = tidyData(transformedData)
+	return cleanedData
+}
+
+function calcScore(array, property) {
+	const average = array.reduce((a, b) => a + b[property], 0) / array.length
+	const standardDeviation = getStandardDeviation(array, property)
+	const percentageOfAverage = (standardDeviation / average)
+	const reversePercentage = 1 - percentageOfAverage
+	const scale = 0.5
+	const reversePercentageMinusScale = reversePercentage - scale
+	const finalScore = reversePercentageMinusScale / 10
+	return finalScore
+}
+
 async function getTracks() {
 	const getHref = localStorage.getItem('href')
 	const tracksHref = `${getHref}/tracks?offset=0&limit=100`
-	let allTracks = []
-	let danceabilityArray = []
-	let tempoArray = []
-	const delay = 100
 
 	const getData = await fetch(tracksHref, {
 		headers: {
@@ -87,26 +110,32 @@ async function getTracks() {
 			})
 		)
 		.then(async data => {
-			localStorage.setItem('redirect_delay',calcDelay(delay, data))
-			await data.forEach(delayLoop(fetchTracksAnalysis, allTracks, delay, 10))
-			return data
+			const idArray = data.map(array => array.map(item => item.track.id))
+			const urlArray = idArray.map(item => item.join())
+			const promiseArray = []
+
+			urlArray.forEach(item => {
+					promiseArray.push(fetchTracksAnalysis(item))
+				})
+
+			const newData = await Promise.all(promiseArray).then(res => res)
+			
+			return {
+				audioFeaturesData: newData,
+				trackData: data
+			}
 		})
-		.then(tracks => {
-			setTimeout(() => allTracks.forEach((item, index) => {
-				danceabilityArray.push(item.danceability)
-				tempoArray.push(item.tempo)
-				
-				if(index === allTracks.length - 1) {
-					const danceabilityAverage = danceabilityArray.reduce((a, b) => a + b, 0) / danceabilityArray.length
-					
-					const danceabilityScore = danceabilityAverage + calcScore(danceabilityArray) + calcScore(tempoArray)
-					const finalScore = Math.round(danceabilityScore * 100)
-					console.log(finalScore)
-					localStorage.setItem('danceability_score', finalScore)
-					return danceabilityScore
-				}
-			}), tracks.length * delay)
+		.then(({ trackData, audioFeaturesData }) =>{
+		 	return cleanData(trackData, audioFeaturesData)
 		})
+		.then(data =>{
+			const danceabilityAverage = data.reduce((a, b) => a + b.danceability, 0) / data.length
+			
+			const danceabilityDecimalScore = danceabilityAverage + calcScore(data, 'danceability') + calcScore(data, 'tempo')
+			const danceabilityFinalScore = Math.round(danceabilityDecimalScore * 100)
+			
+			return localStorage.setItem('danceability_score', danceabilityFinalScore)
+	})
 	return getData
 }
 

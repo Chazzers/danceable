@@ -18,6 +18,7 @@ function renderScore() {
 			<h2>The danceability of your playlist is: </h2>
 			<h1>${playlist.score}<span>/100</span></h1>
 		</main>
+		<a href="${window.location.pathname}#/callback">Measure another playlist</a>
 	`)
 }
 

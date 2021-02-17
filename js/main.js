@@ -53,7 +53,7 @@ function init() {
 	router.add(/loading/, () => {
 		getTracks()
 		renderLoading()
-		setTimeout(() => router.navigate('/score'), localStorage.getItem('redirect_delay'))
+		setTimeout(() => router.navigate('/score'), 1000)
 	})
 	router.add(/score/, () => {
 		renderScore()

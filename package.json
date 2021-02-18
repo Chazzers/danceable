@@ -1,0 +1,25 @@
+{
+  "name": "danceable",
+  "version": "1.0.0",
+  "description": "Welcome to the Danceable?! webapp. This webapp will score the danceability of your spotify playlist!",
+  "main": "index.js",
+  "directories": {
+    "example": "examples"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Chazzers/web-app-from-scratch-2021.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Chazzers/web-app-from-scratch-2021/issues"
+  },
+  "homepage": "https://github.com/Chazzers/web-app-from-scratch-2021#readme",
+  "devDependencies": {
+    "eslint": "^7.20.0"
+  }
+}

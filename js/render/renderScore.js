@@ -1,11 +1,11 @@
 import render from './render.js'
-import localStorage from '../config/localStorage.js'
+import { getLocalStorageItem } from '../config/localStorage.js'
 
 function renderScore() {
 	const playlist = {
-		name: localStorage.getItem('name'),
-		img: localStorage.getItem('img'),
-		score: localStorage.getItem('danceability_score')
+		name: getLocalStorageItem('name'),
+		img: getLocalStorageItem('img'),
+		score: getLocalStorageItem('danceability_score')
 	}
 	render(`
 		<main>

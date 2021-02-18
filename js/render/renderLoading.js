@@ -1,10 +1,10 @@
 import render from './render.js'
-import localStorage from '../config/localStorage.js'
+import { getLocalStorageItem } from '../config/localStorage.js'
 
 function renderLoading() {
 	const playlist = {
-		name: localStorage.getItem('name'),
-		img: localStorage.getItem('img'),
+		name: getLocalStorageItem('name'),
+		img: getLocalStorageItem('img'),
 	}
 	render(`
 		<main>

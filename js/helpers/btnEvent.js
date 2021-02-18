@@ -1,14 +1,16 @@
+import { setLocalStorageItem, removeLocalStorageItem } from '../config/localStorage.js'
+
 function btnEvent(event) {
-	localStorage.removeItem('href')
-	localStorage.removeItem('img')
-	localStorage.removeItem('name')
-	localStorage.removeItem('danceability_score')
+	removeLocalStorageItem('href')
+	removeLocalStorageItem('img')
+	removeLocalStorageItem('name')
+	removeLocalStorageItem('danceability_score')
 	const href = event.currentTarget.dataset.href
 	const name = event.currentTarget.dataset.name
 	const img = event.currentTarget.dataset.img
-	localStorage.setItem('href', href)
-	localStorage.setItem('img', img)
-	localStorage.setItem('name', name)
+	setLocalStorageItem('href', href)
+	setLocalStorageItem('img', img)
+	setLocalStorageItem('name', name)
 }
 
 export default btnEvent

@@ -1,4 +1,4 @@
-import { setLocalStorageItem, removeLocalStorageItem } from '../config/localStorage.js'
+import { setLocalStorageItem, removeLocalStorageItem } from '../helpers/localStorage.js'
 
 function btnEvent(event) {
 	removeLocalStorageItem('href')

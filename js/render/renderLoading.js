@@ -1,5 +1,5 @@
 import render from './render.js'
-import { getLocalStorageItem } from '../config/localStorage.js'
+import { getLocalStorageItem } from '../helpers/localStorage.js'
 
 function renderLoading() {
 	const playlist = {
@@ -7,14 +7,22 @@ function renderLoading() {
 		img: getLocalStorageItem('img'),
 	}
 	render(`
-		<main>
+		<main class="loading">
 			<a class="playlist">
 				<article>
 					<h3>${playlist.name}</h3>
 					<img src="${playlist.img}" alt="">
 				</article>
 			</a>
-			<h1>Loading...</h1>
+			<div class="loading-animation">
+				<h1>Loading...</h1>
+				<div class="loading-music">
+					<div></div>
+					<div></div>
+					<div></div>
+					<div></div>
+				</div>
+			</div>
 		</main>
 	`)
 }

@@ -1,15 +1,15 @@
+// router
 import Router from './router/Router.js'
 
 // fetch
 import getTracks from './fetch/getTracks.js'
-
+import getData from './fetch/getData.js'
 
 // config
 import { url } from './config/api.js'
-import accessIsThere from './config/accessIsThere.js'
-import accessToken from './config/accessToken.js'
-import setAccessToken from './config/setAccessToken.js'
-import { setLocalStorageItem } from './config/localStorage.js'
+import accessIsThere from './helpers/accessIsThere.js'
+import setAccessToken from './helpers/setAccessToken.js'
+import { setLocalStorageItem } from './helpers/localStorage.js'
 
 // render
 import renderPlaylists from './render/renderPlaylists.js'
@@ -24,45 +24,63 @@ import cleanData from './helpers/cleanData.js'
 import calcScore from './helpers/calcScore.js'
 
 function init() {
+	// initialize router
 	const router = new Router({
 		mode: 'hash', 
 		root: '/'
 	})
 
-	renderHome()
-
+	// check if access is there ie if there is an access token in the url
 	if(accessIsThere) {
 		setAccessToken()
-		router.navigate('/callback')
+		router.navigate('/playlists')
 	}
 
-	router.add(/login/, () => {
-		window.location.replace(url)
-	})
-	
-	router.add(/callback/, () => {
-		fetch('https://api.spotify.com/v1/me/playlists', {
-			headers: {
-				'Authorization': 'Bearer ' + accessToken
-			}
-		}).then(res => res.json())
-			.then(data => {
-				const playlists = data.items
-				renderPlaylists(playlists)
-				createBtnEventListeners({ eventFunction: btnEvent })
+	router
+		.add(/login/, () => {
+			// replace the url with the api url for logging in
+			window.location.replace(url)
+		})
+		.add(/playlists/, async() => {
+			// get playlists
+			const playlists = await getData('https://api.spotify.com/v1/me/playlists')
+
+			// render the playlists
+			renderPlaylists(playlists.items)
+
+			// create eventlisteners for the playlists
+			createBtnEventListeners({
+				eventFunction: btnEvent,
+				selector: 'a'
 			})
-	})
-	router.add(/loading/, async() => {
-		renderLoading()
-		const tracks = await getTracks()
-		const cleanTracks = cleanData(tracks.trackData, tracks.audioFeaturesData)
-		const score = calcScore(cleanTracks, 'danceability')
-		setLocalStorageItem('danceability_score', score)
-		setTimeout(() => router.navigate('/score'), 1000)
-	})
-	router.add(/score/, () => {
-		renderScore()
-	})
+		})
+		.add(/loading/, async() => {
+			// render loading page
+			renderLoading()
+			
+			// get tracks
+			const tracks = await getTracks()
+
+			// clean the track data
+			const cleanTracks = cleanData(tracks.trackData, tracks.audioFeaturesData)
+
+			// calc the score from cleaned data
+			const score = calcScore(cleanTracks, 'danceability')
+
+			// save score in local storage
+			setLocalStorageItem('danceability_score', score)
+
+			// navigate to /score
+			router.navigate('/score')
+		})
+		.add(/score/, () => {
+			// render the result
+			renderScore()
+		})
+		.add('', () => {
+			// if no path is present, renderhome
+			renderHome()
+		})
 }
 
 init()

@@ -1,6 +1,6 @@
-function createBtnEventListeners({ eventFunction }) {
-	const buttons = document.querySelectorAll('a')
-	buttons.forEach(btn => btn.addEventListener('click', (event) => eventFunction(event)))
+function createBtnEventListeners({ eventFunction, selector }) {
+	const buttons = document.querySelectorAll(selector)
+	return buttons.forEach(btn => btn.addEventListener('click', (event) => eventFunction(event)))
 }
 
 export default createBtnEventListeners

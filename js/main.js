@@ -9,7 +9,7 @@ import getData from './fetch/getData.js'
 import { url } from './config/api.js'
 import accessIsThere from './helpers/accessIsThere.js'
 import setAccessToken from './helpers/setAccessToken.js'
-import { setLocalStorageItem } from './helpers/localStorage.js'
+import { setLocalStorageItem, removeLocalStorageItem } from './helpers/localStorage.js'
 
 // render
 import renderPlaylists from './render/renderPlaylists.js'
@@ -44,6 +44,11 @@ function init() {
 		.add(/playlists/, async() => {
 			// get playlists
 			const playlists = await getData('https://api.spotify.com/v1/me/playlists')
+
+			removeLocalStorageItem('href')
+			removeLocalStorageItem('img')
+			removeLocalStorageItem('name')
+			removeLocalStorageItem('danceability_score')
 
 			// render the playlists
 			renderPlaylists(playlists.items)

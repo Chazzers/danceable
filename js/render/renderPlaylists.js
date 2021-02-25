@@ -9,10 +9,10 @@ function renderPlaylists(playlists) {
 		<main>
 		<div>
 		${playlists.map(playlist => 
-		`<a class="playlist" href="${window.location.pathname}#/loading" data-href="${playlist.href}" data-name="${playlist.name}" data-img="${playlist.images[0].url}">
+		`<a class="playlist" href="${window.location.pathname}#/loading" data-href="${playlist.href}" data-name="${playlist.name}" data-img="${playlist.images[0] ? playlist.images[0].url : ''}">
 				<article>
 					<h3>${playlist.name}</h3>
-					<img src="${playlist.images[0].url}" alt="">
+					<img src="${playlist.images[0] ? playlist.images[0].url : './assets/images/music-icon.png'}" alt="">
 				</article>
 			</a>`
 	).join('')}

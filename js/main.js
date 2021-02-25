@@ -45,6 +45,8 @@ function init() {
 			// get playlists
 			const playlists = await getData('https://api.spotify.com/v1/me/playlists')
 
+			console.log(playlists)
+
 			removeLocalStorageItem('href')
 			removeLocalStorageItem('img')
 			removeLocalStorageItem('name')

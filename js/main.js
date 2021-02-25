@@ -20,8 +20,10 @@ import renderScore from './render/renderScore.js'
 // helper
 import createBtnEventListeners from './helpers/createBtnEventListeners.js'
 import btnEvent from './helpers/btnEvent.js'
-import cleanData from './helpers/cleanData.js'
+import { cleanData, mergeNestedArray } from './helpers/cleanData.js'
 import calcScore from './helpers/calcScore.js'
+import recursiveFetch from './fetch/recursiveFetch.js'
+import pushToArray from './helpers/pushToArray.js'
 
 function init() {
 	// initialize router
@@ -43,8 +45,14 @@ function init() {
 		})
 		.add(/playlists/, async() => {
 			// get playlists
-			const playlists = await getData('https://api.spotify.com/v1/me/playlists')
-
+			const playlists = await getData('https://api.spotify.com/v1/me/playlists').then(data => {
+				const dataArray = []
+				pushToArray(dataArray, data.items)
+				return recursiveFetch({ 
+					url: data.next,
+					array: dataArray
+				})
+			}).then(data => mergeNestedArray(data))
 			console.log(playlists)
 
 			removeLocalStorageItem('href')
@@ -53,7 +61,7 @@ function init() {
 			removeLocalStorageItem('danceability_score')
 
 			// render the playlists
-			renderPlaylists(playlists.items)
+			renderPlaylists(playlists)
 
 			// create eventlisteners for the playlists
 			createBtnEventListeners({

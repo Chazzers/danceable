@@ -35,4 +35,4 @@ function mergeData(trackData, audioFeatureData) {
 	return trackData
 }
 
-export default cleanData
+export { cleanData, mergeNestedArray }

@@ -2,26 +2,9 @@ import accessToken from '../helpers/accessToken.js'
 import { getLocalStorageItem } from '../helpers/localStorage.js'
 import pushToArray from '../helpers/pushToArray.js'
 import getData from './getData.js'
+import recursiveFetch from './recursiveFetch.js'
 
-async function recursiveFetch({ url, array }) {
-	if(url) {
-		const tracks = await fetch(url, {
-			headers: {
-				'Authorization': 'Bearer ' + accessToken
-			}
-		})
-			.then(res => res.json())
-			.then(data => {
-				if(data.next) {
-					pushToArray(array, data.items)
-					return recursiveFetch({ url: data.next, array: array })
-				}
-				return array
-			})
-		return tracks
-	}
-	return array
-}
+
 
 function createUrl({ baseUrl, query, value }) {
 	const url = `${baseUrl}${query ? `?${query}=` : ''}${value ? value : ''}`

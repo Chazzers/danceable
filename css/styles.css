@@ -130,20 +130,25 @@ main div {
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
+	padding: 0 1rem;
 }
 
-main .playlist:nth-child(3n) article{
-	margin-right: 0;
+@media screen and (min-width: 50rem ) {
+	main .playlist:nth-child(3n) article{
+		margin-right: 0;
+	}
+	
+	main .playlist:nth-child(3n+1):last-child article{
+		margin-right: 0;
+	}
+	
+	main .playlist:nth-child(3n+2):last-child article,
+	main .playlist:nth-child(3n+2):last-child article{
+		margin-right: 0;
+	}
 }
 
-main .playlist:nth-child(3n+1):last-child article{
-	margin-right: 0;
-}
 
-main .playlist:nth-child(3n+2):last-child article,
-main .playlist:nth-child(3n+2):last-child article{
-	margin-right: 0;
-}
 
 header h3 {
 	margin: 0;

@@ -53,7 +53,6 @@ function init() {
 					array: dataArray
 				})
 			}).then(data => mergeNestedArray(data))
-			console.log(playlists)
 
 			removeLocalStorageItem('href')
 			removeLocalStorageItem('img')

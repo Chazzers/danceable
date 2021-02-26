@@ -8,8 +8,8 @@ This app makes use of the spotify api through the use of the "(implicit grant fl
 
 ## Actor diagram
 
-![actor-diagram](https://user-images.githubusercontent.com/33430669/107672487-3df00880-6c95-11eb-85a3-4e4e09c38ff5.jpg)
+![actor-diagram](https://user-images.githubusercontent.com/33430669/109317151-b5549900-784c-11eb-9861-d144adc81e64.jpg)
 
 ## Interaction diagram
 
-![interaction-diagram](https://user-images.githubusercontent.com/33430669/107672575-5829e680-6c95-11eb-9870-c726127fdc7e.jpg)
+![interaction-diagram](https://user-images.githubusercontent.com/33430669/109317195-c00f2e00-784c-11eb-8ebe-d3f320884aff.jpg)

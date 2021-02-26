@@ -1,6 +1,4 @@
 import accessToken from '../helpers/accessToken.js'
-import { getLocalStorageItem } from '../helpers/localStorage.js'
-import pushToArray from '../helpers/pushToArray.js'
 import getData from './getData.js'
 import recursiveFetch from './recursiveFetch.js'
 
@@ -20,36 +18,37 @@ function createPromises(array, promise, { baseUrl, query, promiseArray = [] }) {
 	return promiseArray
 }
 
-async function getTracks() {
-	const getHref = getLocalStorageItem('href')
-	const tracksHref = `${getHref}/tracks?offset=0&limit=100`
-
-	const getTrackData = await fetch(tracksHref, {
+async function getTracks(url) {
+	const getTrackData = await fetch(url, {
 		headers: {
 			'Authorization': 'Bearer ' + accessToken
 		}
 	})
 		.then(res => res.json())
-		.then(data => { 
-			const dataArray = []
-			pushToArray(dataArray, data.items)
-			return recursiveFetch({ 
+		.then((data, containerArray = [data.items]) =>  
+			recursiveFetch({ 
 				url: data.next,
-				array: dataArray
+				array: containerArray
 			})
-		})
-		.then(async data => {
-			const idArray = data.map(array => array.map(item => item.track.id))
-			const urlArray = idArray.map(item => item.join())
-
-			const newData = await Promise.all(createPromises(urlArray, getData, {
-				baseUrl: 'https://api.spotify.com/v1/audio-features',
-				query: 'ids',
-			})).then(res => res)
-			
+		)
+		.then(trackData => {
 			return {
-				audioFeaturesData: newData,
-				trackData: data
+				audioFeaturesData: trackData.map(array => array.map(item => item.track.id)),
+				trackData: trackData
+			}
+		})
+		.then(({ trackData, audioFeaturesData }) => {
+			return {
+				audioFeaturesData: audioFeaturesData.map(item => item.join()),
+				trackData: trackData
+			}
+		}).then(async({ trackData, audioFeaturesData }) => {
+			return {
+				audioFeaturesData: await Promise.all(createPromises(audioFeaturesData, getData, {
+					baseUrl: 'https://api.spotify.com/v1/audio-features',
+					query: 'ids',
+				})).then(res => res),
+				trackData: trackData
 			}
 		})
 	return getTrackData

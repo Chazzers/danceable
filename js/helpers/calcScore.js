@@ -20,9 +20,8 @@ function calcAverage(array, property) {
 }
 
 function calcStandardDeviation(array, property) {
-	const n = array.length
-	const mean = array.reduce((a, b) => a + b[property], 0) / n
-	return Math.sqrt(array.map(x => Math.pow(x[property] - mean, 2)).reduce((a, b) => a + b) / n)
+	const average = calcAverage(array, property)
+	return Math.sqrt(array.map(x => Math.pow(x[property] - average, 2)).reduce((a, b) => a + b) / array.length)
 }
 
 

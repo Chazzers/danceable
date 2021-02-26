@@ -9,7 +9,7 @@ import getData from './fetch/getData.js'
 import { url } from './config/api.js'
 import accessIsThere from './helpers/accessIsThere.js'
 import setAccessToken from './helpers/setAccessToken.js'
-import { setLocalStorageItem, removeLocalStorageItem } from './helpers/localStorage.js'
+import { setLocalStorageItem, removeLocalStorageItem, getLocalStorageItem } from './helpers/localStorage.js'
 
 // render
 import renderPlaylists from './render/renderPlaylists.js'
@@ -73,7 +73,9 @@ function init() {
 			renderLoading()
 			
 			// get tracks
-			const tracks = await getTracks()
+			//const getHref = getLocalStorageItem('href')
+			// const tracksHref = `${getHref}/tracks?offset=0&limit=100`
+			const tracks = await getTracks(`${getLocalStorageItem('href')}/tracks?offset=0&limit=100`)
 
 			// clean the track data
 			const cleanTracks = cleanData(tracks.trackData, tracks.audioFeaturesData)

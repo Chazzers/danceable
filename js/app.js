@@ -73,8 +73,6 @@ function init() {
 			renderLoading()
 			
 			// get tracks
-			//const getHref = getLocalStorageItem('href')
-			// const tracksHref = `${getHref}/tracks?offset=0&limit=100`
 			const tracks = await getTracks(`${getLocalStorageItem('href')}/tracks?offset=0&limit=100`)
 
 			// clean the track data

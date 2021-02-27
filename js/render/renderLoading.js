@@ -1,6 +1,6 @@
 import render from './render.js'
 import { getLocalStorageItem } from '../helpers/localStorage.js'
-
+// get playlist and show it
 function renderLoading() {
 	const playlist = {
 		name: getLocalStorageItem('name'),

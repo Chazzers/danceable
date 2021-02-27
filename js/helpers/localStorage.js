@@ -1,3 +1,4 @@
+// thought this would make my code look cleaner...
 const localStorage = window.localStorage
 
 function getLocalStorageItem(key) {

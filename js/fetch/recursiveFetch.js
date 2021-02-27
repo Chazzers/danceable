@@ -1,6 +1,6 @@
 import accessToken from '../helpers/accessToken.js'
 import pushToArray from '../helpers/pushToArray.js'
-
+// loop over the fetches if data.next is not null
 async function recursiveFetch({ url, array }) {
 	if(url) {
 		const tracks = await fetch(url, {

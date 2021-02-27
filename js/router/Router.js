@@ -16,11 +16,12 @@ class Router {
 		
 		this.listen()
 	}
-
+	// method for adding a route
 	add = (path, callback) => {
 		this.routes.push({ path, callback })
 		return this
 	}
+	// method for removing a route
 	remove = path => {
 		this.routes.forEach((route, index) => {
 			if(route.path === path) {
@@ -29,17 +30,21 @@ class Router {
 			}
 		})
 	}
+	// clear all routes
 	flush = () => {
 		this.routes = []
 		return this
 	}
-
+	// clearslashes of path
 	clearSlashes = path => 
 		path
 			.toString()
 			.replace(/\/$/, "")
 			.replace(/^\//, "")
+
 	
+
+	// get pathname and search
 	getFragment = () => {
 		let fragment = ''
 
@@ -54,6 +59,7 @@ class Router {
 		return this.clearSlashes(fragment)
 	}
 
+	// navigate through js
 	navigate = (path = '') => {
 		if(this.mode == 'history') {
 			window.history.pushState(null, null, this.root + this.clearSlashes(path))
@@ -63,11 +69,13 @@ class Router {
 		return this
 	}
 
+	// listen to route changes
 	listen = () => {
 		clearInterval(this.interval)
 		this.interval = setInterval(this.interval, 50)
 	}
 
+	// create an interval
 	interval = () => {
 		if(this.current === this.getFragment()){
 			return

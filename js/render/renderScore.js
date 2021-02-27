@@ -1,6 +1,6 @@
 import render from './render.js'
 import { getLocalStorageItem } from '../helpers/localStorage.js'
-
+// render score
 function renderScore() {
 	const playlist = {
 		name: getLocalStorageItem('name'),

@@ -1,5 +1,5 @@
 import { setLocalStorageItem } from '../helpers/localStorage.js'
-
+// btn events for the playlist where the data attributes of the anchor tag are stored in local storage
 function btnEvent(event) {
 	const href = event.currentTarget.dataset.href
 	const name = event.currentTarget.dataset.name

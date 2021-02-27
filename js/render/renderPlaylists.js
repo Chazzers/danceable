@@ -1,5 +1,5 @@
 import render from './render.js'
-
+// render playlists
 function renderPlaylists(playlists) {
 	render(`
 		<h1>Select a playlist</h1>

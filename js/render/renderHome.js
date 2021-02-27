@@ -1,5 +1,5 @@
 import render from './render.js'
-
+// render home function
 function renderHome() {
 	render(`
 		<main>

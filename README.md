@@ -30,5 +30,5 @@ Afterwards the score will be generated based on the data fetched from the songs'
 
 ## Resources
 
-[https://github.com/thecreazy/create-a-modern-javascript-router](Router project)
-[https://www.hackdoor.io/articles/create-modern-javascript-router-ff919b1cbb08](Router article)
+[Router project](https://github.com/thecreazy/create-a-modern-javascript-router)
+[Router article](https://www.hackdoor.io/articles/create-modern-javascript-router-ff919b1cbb08)

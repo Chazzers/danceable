@@ -10,11 +10,11 @@ This app makes use of the spotify api through the use of the "(implicit grant fl
 
 First all your playlists and it's data will get fetched from the spotify api.
 
-![image](https://user-images.githubusercontent.com/33430669/109639530-978a7b00-7b4f-11eb-8c80-a5772683b353.png)
+![image](https://user-images.githubusercontent.com/33430669/109640429-c2c19a00-7b50-11eb-9187-2acb91a2d15a.png)
 
 Then all the songs' audio features data of the playlist gets fetched.
 
-![image](https://user-images.githubusercontent.com/33430669/109640132-5a72b880-7b50-11eb-8aee-ffc160b1be8a.png)
+![image](https://user-images.githubusercontent.com/33430669/109640497-da991e00-7b50-11eb-8f97-f883c83e5a07.png)
 
 Afterwards the score will be generated based on the data fetched from the songs' audio-features data.
 

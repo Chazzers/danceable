@@ -1,5 +1,7 @@
 # Danceable?!
 
+![image](https://user-images.githubusercontent.com/33430669/109641712-521b7d00-7b52-11eb-8d33-a11b4943df2f.png)
+
 Welcome to the Danceable?! webapp. This webapp will score the danceability of your spotify playlist!
 
 ## Spotify API

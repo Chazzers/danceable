@@ -27,3 +27,8 @@ Afterwards the score will be generated based on the data fetched from the songs'
 ## Interaction diagram
 
 ![interaction-diagram](https://user-images.githubusercontent.com/33430669/109317195-c00f2e00-784c-11eb-8ebe-d3f320884aff.jpg)
+
+## Resources
+
+(Router project)[https://github.com/thecreazy/create-a-modern-javascript-router]
+(Router article)[https://www.hackdoor.io/articles/create-modern-javascript-router-ff919b1cbb08]
